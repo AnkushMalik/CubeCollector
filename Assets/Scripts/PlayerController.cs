@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;
-	private int count;
+	private int score;
 
 	public float speed = 5;
-	public Text countText;
+	public Text scoreText;
+	public Text winText;
 
 	void Start(){
 		rb = GetComponent<Rigidbody>();
-		count = 0;
-		countText.text = "Score : " + count.ToString();
+		score = 0;
+		SetScoretext();
+		winText.text = "";
 	}
 
 	void Update() {  // place where our instructions before rendering a frame, are placed
@@ -28,13 +30,20 @@ public class PlayerController : MonoBehaviour {
 		rb.AddForce(movement * speed);
 	}
 
+	void SetScoretext(){
+		scoreText.text = "Score : " + score.ToString();
+		if(score >= 8){
+			winText.text = "You Win";
+		}
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag("Collectibles"))
 		{
 			other.gameObject.SetActive (false);
-			count += 1;
-			countText.text = "Score : " + count.ToString();
+			score += 1;
+			SetScoretext();
 		}
 	}
 }
